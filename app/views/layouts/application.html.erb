@@ -10,41 +10,46 @@
   <%= javascript_importmap_tags %>
 </head>
 
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
-<!-- 🔹 Навигация -->
-<header class="bg-white border-b border-gray-200 shadow-sm p-4">
-  <div class="container mx-auto flex justify-between items-center">
-    <div class="text-xl font-bold text-blue-600">EcommerceStore</div>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+<!-- 🔷 Header -->
+<header class="bg-white shadow-sm border-b border-gray-200">
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <!-- Логотип -->
+    <div class="text-2xl font-bold text-indigo-600">
+      <%= link_to "EcommerceStore", root_path, class: "hover:text-indigo-700 transition" %>
+    </div>
 
-    <div class="space-x-4 text-sm">
+    <!-- Навигация -->
+    <div class="text-sm space-x-4 text-right">
       <% if user_signed_in? %>
-        <span>Привет, <%= current_user.name || current_user.email %>!</span>
-        <%= link_to 'Корзина', cart_path, class: "text-blue-500 hover:underline" %>
-        <%= link_to 'Мои заказы', orders_path, class: "text-blue-500 hover:underline" %>
+            <span class="text-gray-700 font-medium">
+              Привет, <%= current_user.name || current_user.email %>
+            </span>
+        <%= link_to 'Корзина', cart_path, class: "text-indigo-600 hover:underline" %>
+        <%= link_to 'Мои заказы', orders_path, class: "text-indigo-600 hover:underline" %>
         <a href="#" id="logout-link" class="text-red-500 hover:underline">Выйти</a>
       <% else %>
-        <%= link_to 'Войти', new_user_session_path, class: "text-blue-500 hover:underline" %>
-        <%= link_to 'Регистрация', new_user_registration_path, class: "text-blue-500 hover:underline" %>
+        <%= link_to 'Войти', new_user_session_path, class: "text-indigo-600 hover:underline" %>
+        <%= link_to 'Регистрация', new_user_registration_path, class: "text-indigo-600 hover:underline" %>
       <% end %>
     </div>
   </div>
 </header>
 
-<!-- 🔹 Контент -->
-<main class="container mx-auto px-4 py-6 flex-grow">
+<!-- 🔶 Main Content -->
+<main class="flex-grow container mx-auto px-4 py-8">
   <%= yield %>
 </main>
 
-<!-- 🔹 Футер -->
-<footer class="bg-white border-t border-gray-200 p-4 text-center text-sm text-gray-500">
+<!-- 🔹 Footer -->
+<footer class="bg-white text-center border-t border-gray-200 text-sm text-gray-500 py-4">
   &copy; <%= Time.current.year %> EcommerceStore. Все права защищены.
 </footer>
 
 <% if user_signed_in? %>
   <script>
-      document.getElementById('logout-link').addEventListener('click', function(e) {
+      document.getElementById('logout-link')?.addEventListener('click', function(e) {
           e.preventDefault();
-
           fetch("<%= destroy_user_session_path %>", {
               method: 'DELETE',
               headers: {

@@ -8,13 +8,26 @@
   <% end %>
 </nav>
 
-<div class="products-list">
+<div class="row">
   <% @products.each do |product| %>
-    <div class="product-item">
-      <h2><%= link_to product.name, product_path(product) %></h2>
-      <p><%= truncate(product.description, length: 100) %></p>
-      <p>Цена: <%= number_to_currency(product.price, unit: "₽") %></p>
-      <%= button_to "В корзину", add_to_cart_path(product), method: :post %>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <% if product.image.attached? %>
+          <%= image_tag product.image, class: "card-img-top", alt: product.name %>
+        <% end %>
+        <div class="card-body">
+          <h5 class="card-title"><%= product.name %></h5>
+          <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+          <p class="card-text fw-bold">Цена: <%= number_to_currency(product.price, unit: "₽") %></p>
+          <%= link_to 'Подробнее', product_path(product), class: 'btn btn-outline-primary btn-sm' %>
+
+          <% if user_signed_in? %>
+            <%= button_to 'Добавить в корзину', add_to_cart_path(product), method: :post, class: 'btn btn-success btn-sm mt-2' %>
+          <% else %>
+            <p class="mt-2"><%= link_to 'Войдите, чтобы добавить в корзину', new_user_session_path %></p>
+          <% end %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>

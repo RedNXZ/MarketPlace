@@ -1,0 +1,43 @@
+<h1 class="text-3xl font-bold mb-6">🛒 Ваша корзина</h1>
+
+<% if @products.empty? %>
+  <p class="text-gray-600">Корзина пуста.</p>
+<% else %>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+      <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
+      <tr>
+        <th class="px-4 py-3">Название</th>
+        <th class="px-4 py-3">Количество</th>
+        <th class="px-4 py-3">Цена за шт.</th>
+        <th class="px-4 py-3">Итого</th>
+        <th class="px-4 py-3">Действия</th>
+      </tr>
+      </thead>
+      <tbody class="text-sm divide-y divide-gray-100">
+      <% @products.each do |product| %>
+        <% quantity = session[:cart][product.id.to_s] %>
+        <tr>
+          <td class="px-4 py-3 font-medium text-blue-700 hover:underline">
+            <%= link_to product.name, product_path(product) %>
+          </td>
+          <td class="px-4 py-3"><%= quantity %></td>
+          <td class="px-4 py-3"><%= number_to_currency(product.price, unit: "₽") %></td>
+          <td class="px-4 py-3"><%= number_to_currency(product.price * quantity, unit: "₽") %></td>
+          <td class="px-4 py-3">
+            <%= button_to "Удалить", remove_from_cart_path(product), method: :delete, class: "text-red-600 hover:text-red-800 underline" %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<div class="mt-6 flex items-center gap-4">
+  <%= link_to "← Продолжить покупки", root_path, class: "text-blue-600 hover:underline" %>
+
+  <% if @products.any? %>
+    <%= link_to "Оформить заказ", new_order_path, class: "ml-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" %>
+  <% end %>
+</div>

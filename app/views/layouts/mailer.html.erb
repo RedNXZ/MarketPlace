@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Письмо</title>
+  <!-- В email-инлайн стили обычно обязательны, Tailwind CSS классы в чистом виде могут не работать,
+       но если ты планируешь использовать его в web-версии или в шаблонах с инлайнингом — можно подключать -->
+  <style>
+      /* Если используешь Tailwind, то нужно инлайнить классы перед отправкой письма (через специальные гемы/сервисы) */
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+<%= yield %>
+</body>
+</html>

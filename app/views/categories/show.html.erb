@@ -1,0 +1,16 @@
+<h1 class="text-2xl font-bold mb-6">Категория: <%= @category.name %></h1>
+
+<div class="space-y-4">
+  <% @products.each do |product| %>
+    <div class="border border-gray-300 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+      <h2 class="text-xl font-semibold text-blue-600 hover:underline">
+        <%= link_to product.name, product_path(product) %>
+      </h2>
+      <p class="text-gray-700 mt-2">Цена: <%= number_to_currency(product.price, unit: "₽") %></p>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-6">
+  <%= link_to "Все категории", categories_path, class: "text-blue-500 hover:underline font-medium" %>
+</div>

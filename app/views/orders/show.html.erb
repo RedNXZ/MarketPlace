@@ -1,28 +1,46 @@
-<h1>Заказ №<%= @order.id %></h1>
+<div class="container my-5" style="max-width: 800px;">
+  <h2 class="mb-4 text-center">📄 Заказ №<%= @order.id %></h2>
 
-<p>Дата: <%= @order.created_at.strftime("%d.%m.%Y %H:%M") %></p>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Информация о заказе</h5>
+      <p><strong>Имя:</strong> <%= @order.name %></p>
+      <p><strong>Телефон:</strong> <%= @order.phone %></p>
+      <p><strong>Адрес доставки:</strong> <%= @order.address %></p>
+      <p><strong>Дата заказа:</strong> <%= l(@order.created_at, format: :long) %></p>
+    </div>
+  </div>
 
-<table>
-  <thead>
-  <tr>
-    <th>Товар</th>
-    <th>Количество</th>
-    <th>Цена за шт.</th>
-    <th>Итого</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @order.order_items.each do |item| %>
-    <tr>
-      <td><%= link_to item.product.name, product_path(item.product) %></td>
-      <td><%= item.quantity %></td>
-      <td><%= number_to_currency(item.product.price, unit: "₽") %></td>
-      <td><%= number_to_currency(item.product.price * item.quantity, unit: "₽") %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">🛒 Состав заказа</h5>
+      <% if @order.order_items.any? %>
+        <ul class="list-group mb-3">
+          <% total = 0 %>
+          <% @order.order_items.includes(:product).each do |item| %>
+            <% product = item.product %>
+            <% line_total = item.quantity * product.price %>
+            <% total += line_total %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><%= product.name %></strong><br>
+                <small>Цена: <%= number_to_currency(product.price, unit: "₽") %> × <%= item.quantity %></small>
+              </div>
+              <span><%= number_to_currency(line_total, unit: "₽") %></span>
+            </li>
+          <% end %>
+          <li class="list-group-item d-flex justify-content-between">
+            <strong>Итого:</strong>
+            <strong><%= number_to_currency(total, unit: "₽") %></strong>
+          </li>
+        </ul>
+      <% else %>
+        <p>Нет товаров в этом заказе.</p>
+      <% end %>
+    </div>
+  </div>
 
-<p>Общая сумма: <%= number_to_currency(@order.order_items.sum { |i| i.product.price * i.quantity }, unit: "₽") %></p>
-
-<%= link_to 'Вернуться к списку заказов', orders_path %>
+  <div class="mt-4 text-center">
+    <%= link_to "Назад к заказам", orders_path, class: "btn btn-outline-secondary" %>
+  </div>
+</div>

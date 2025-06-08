@@ -1,22 +1,64 @@
-<h1>Оформление заказа</h1>
+<div class="container my-5" style="max-width: 700px;">
+  <h2 class="mb-4 text-center">📦 Оформление заказа</h2>
 
-<%= form_with model: @order, local: true do |form| %>
-  <div>
-    <%= form.label :name, "Имя" %><br>
-    <%= form.text_field :name %>
+  <% if @order.errors.any? %>
+    <div class="alert alert-danger">
+      <h5>Пожалуйста, исправьте ошибки:</h5>
+      <ul>
+        <% @order.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <%= form_with model: @order, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :name, "Имя получателя", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control", required: true, placeholder: "Иван Иванов" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :phone, "Телефон", class: "form-label" %>
+          <%= f.telephone_field :phone, class: "form-control", required: true, placeholder: "+7 (999) 123-45-67" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :address, "Адрес доставки", class: "form-label" %>
+          <%= f.text_area :address, class: "form-control", rows: 3, required: true, placeholder: "Город, улица, дом, квартира" %>
+        </div>
+
+        <div class="text-center">
+          <%= f.submit "🚀 Оформить заказ", class: "btn btn-success btn-lg w-100" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :address, "Адрес доставки" %><br>
-    <%= form.text_field :address %>
-  </div>
-
-  <div>
-    <%= form.label :phone, "Телефон" %><br>
-    <%= form.telephone_field :phone %>
-  </div>
-
-  <div>
-    <%= form.submit "Подтвердить заказ" %>
-  </div>
-<% end %>
+  <% if @cart.present? && @products.present? %>
+    <div class="mt-4">
+      <h4>🛒 Ваш заказ:</h4>
+      <ul class="list-group">
+        <% total = 0 %>
+        <% @products.each do |product| %>
+          <% quantity = @cart[product.id.to_s].to_i %>
+          <% item_total = product.price * quantity %>
+          <% total += item_total %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong><%= product.name %></strong><br>
+              <small>Цена: <%= number_to_currency(product.price, unit: "₽") %> × <%= quantity %></small>
+            </div>
+            <span><%= number_to_currency(item_total, unit: "₽") %></span>
+          </li>
+        <% end %>
+        <li class="list-group-item d-flex justify-content-between">
+          <strong>Итого:</strong>
+          <strong><%= number_to_currency(total, unit: "₽") %></strong>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+</div>

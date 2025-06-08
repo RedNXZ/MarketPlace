@@ -40,16 +40,15 @@ class ProductsController < ApplicationController
       render :edit
     end
   end
-
   def destroy
     @product = Product.find(params[:id])
-
     if @product.destroy
-      redirect_to products_path, notice: "Продукт успешно удалён"
+      redirect_to products_path, flash: { delete_notice: "Продукт успешно удалён" }
     else
-      redirect_to products_path, alert: @product.errors.full_messages.to_sentence
+      redirect_to root_path, flash: { delete_alert: @product.errors.full_messages.to_sentence }
     end
   end
+
 
   private
 

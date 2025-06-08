@@ -1,16 +1,36 @@
-<h1 class="text-2xl font-bold mb-6">Категория: <%= @category.name %></h1>
+<h1 class="text-3xl font-bold mb-6">Категория: <%= @category.name %></h1>
 
-<div class="space-y-4">
+<!-- Галерея карточек товаров -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   <% @products.each do |product| %>
-    <div class="border border-gray-300 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-      <h2 class="text-xl font-semibold text-blue-600 hover:underline">
-        <%= link_to product.name, product_path(product) %>
-      </h2>
-      <p class="text-gray-700 mt-2">Цена: <%= number_to_currency(product.price, unit: "₽") %></p>
+    <div class="bg-white rounded-2xl shadow hover:shadow-lg transition duration-300 overflow-hidden flex flex-col">
+      <!-- Изображение товара -->
+      <img src="https://loremflickr.com/400/300/<%= URI.encode_www_form_component(product.name) %>"
+           alt="<%= product.name %>"
+           class="w-full h-48 object-cover" />
+
+      <!-- Информация о товаре -->
+      <div class="p-4 flex flex-col flex-grow">
+        <h2 class="text-lg font-semibold text-indigo-700 hover:underline mb-1">
+          <%= link_to product.name, product_path(product) %>
+        </h2>
+
+        <p class="text-sm text-gray-600 mb-2">
+          <%= truncate(product.description, length: 80) %>
+        </p>
+
+        <p class="text-base font-semibold text-gray-800 mb-4">
+          <%= number_to_currency(product.price, unit: "₽") %>
+        </p>
+
+        <%= button_to "Добавить в корзину", add_to_cart_path(product), method: :post,
+                      class: "mt-auto bg-indigo-600 text-white text-sm py-2 rounded-md hover:bg-indigo-700 transition" %>
+      </div>
     </div>
   <% end %>
 </div>
 
+<!-- Ссылка назад -->
 <div class="mt-6">
-  <%= link_to "Все категории", categories_path, class: "text-blue-500 hover:underline font-medium" %>
+  <%= link_to "← Все категории", categories_path, class: "text-indigo-600 hover:underline text-sm" %>
 </div>

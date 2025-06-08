@@ -1,15 +1,21 @@
-<h1 class="text-3xl font-bold mb-6">Мои заказы</h1>
+<% if @orders.present? %>
+  <h1 class="text-3xl font-bold mb-6">Мои заказы</h1>
 
-<% if @orders.empty? %>
-  <p class="text-gray-600">У вас пока нет заказов.</p>
+  <% if @orders.empty? %>
+    <p class="text-gray-600">У вас пока нет заказов.</p>
+  <% else %>
+    <ul class="space-y-4">
+      <% @orders.each do |order| %>
+        <li class="p-4 border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div>
+            <%= link_to "Заказ №#{order.id}", order_path(order), class: "text-blue-600 font-semibold hover:underline" %>
+            <span class="text-gray-700 ml-2 text-sm">— от <time datetime="<%= order.created_at.iso8601 %>"><%= order.created_at.strftime("%d.%m.%Y %H:%M") %></time></span>
+          </div>
+          <span class="mt-2 sm:mt-0 text-sm text-gray-500">Статус: <strong><%= order.status.presence || "Новый" %></strong></span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
 <% else %>
-  <ul class="space-y-4">
-    <% @orders.each do |order| %>
-      <li class="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-        <%= link_to "Заказ №#{order.id}", order_path(order), class: "text-blue-600 font-semibold hover:underline" %>
-        <span class="text-gray-700 ml-2">— от <time datetime="<%= order.created_at.iso8601 %>"><%= order.created_at.strftime("%d.%m.%Y %H:%M") %></time></span>
-        <span class="ml-4 text-sm text-gray-500">Статус: <strong><%= order.status.presence || "Новый" %></strong></span>
-      </li>
-    <% end %>
-  </ul>
+  <p class="text-red-600 text-center mt-8">Не удалось загрузить заказы. Попробуйте позже.</p>
 <% end %>

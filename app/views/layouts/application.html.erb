@@ -20,11 +20,11 @@
     </div>
 
     <!-- Навигация -->
-    <div class="text-sm space-x-4 text-right">
+    <div class="text-sm space-x-4 text-right md:space-x-4 hidden md:flex">
       <% if user_signed_in? %>
-            <span class="text-gray-700 font-medium">
-              Привет, <%= current_user.name || current_user.email %>
-            </span>
+        <span class="text-gray-700 font-medium">
+          Привет, <%= current_user.name.presence || current_user.email %>
+        </span>
         <%= link_to 'Корзина', cart_path, class: "text-indigo-600 hover:underline" %>
         <%= link_to 'Мои заказы', orders_path, class: "text-indigo-600 hover:underline" %>
         <a href="#" id="logout-link" class="text-red-500 hover:underline">Выйти</a>
@@ -43,7 +43,7 @@
 
 <!-- 🔹 Footer -->
 <footer class="bg-white text-center border-t border-gray-200 text-sm text-gray-500 py-4">
-  &copy; <%= Time.current.year %> EcommerceStore. Все права защищены.
+  © <%= Time.current.year %> EcommerceStore. Все права защищены.
 </footer>
 
 <% if user_signed_in? %>
@@ -57,8 +57,14 @@
                   'Accept': 'application/json'
               },
               credentials: 'same-origin'
-          }).then(() => {
-              window.location.href = "/";
+          }).then(response => {
+              if (response.ok) {
+                  window.location.href = "/";
+              } else {
+                  alert("Ошибка при выходе. Попробуйте снова.");
+              }
+          }).catch(error => {
+              alert("Произошла ошибка: " + error);
           });
       });
   </script>

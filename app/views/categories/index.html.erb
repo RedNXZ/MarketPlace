@@ -1,10 +1,19 @@
 <h1 class="text-2xl font-bold mb-6">Категории товаров</h1>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
   <% @categories.each do |category| %>
-    <%= link_to category_path(category), class: "block bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition duration-200" do %>
-      <h2 class="text-lg font-semibold text-gray-800"><%= category.name %></h2>
+    <%= link_to category_path(category), class: "block bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition duration-300" do %>
+      <!-- 🔸 Картинка-заглушка по названию -->
+      <img src="https://loremflickr.com/400/200/<%= URI.encode_www_form_component(category.name) %>"
+           alt="<%= category.name %>"
+           class="w-full h-40 object-cover" />
+
+      <!-- 🔹 Название категории -->
+      <div class="p-4">
+        <h2 class="text-lg font-semibold text-gray-800 hover:text-indigo-600 transition">
+          <%= category.name %>
+        </h2>
+      </div>
     <% end %>
   <% end %>
 </div>
-

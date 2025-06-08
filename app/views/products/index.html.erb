@@ -1,38 +1,50 @@
-<h1 class="text-3xl font-bold mb-6">Каталог товаров</h1>
+<h1 class="text-2xl font-bold mb-6">Каталог товаров</h1>
 
-<nav class="mb-6 text-sm text-gray-700 font-medium">
-  <span class="mr-2">Категории:</span>
-  <%= link_to "Все", products_path, class: "text-blue-600 hover:underline mr-2" %>
+<!-- 🔹 Навигация по категориям -->
+<nav class="mb-6 text-sm font-medium text-gray-700 flex flex-wrap items-center gap-2">
+  <span class="mr-2 text-gray-600">Категории:</span>
+  <%= link_to "Все", products_path,
+              class: "text-blue-600 hover:underline px-2 py-1" %>
   <% Category.all.each do |category| %>
-    <%= link_to category.name, products_path(category_id: category.id), class: "text-blue-600 hover:underline mr-2" %>
+    <%= link_to category.name, products_path(category_id: category.id),
+                class: "text-blue-600 hover:underline px-2 py-1" %>
   <% end %>
 </nav>
 
-<!-- Галерея карточек -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- 🔸 Сетка карточек -->
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-7xl mx-auto px-4">
   <% @products.each do |product| %>
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden">
-
-      <!-- 🔸 Картинка-заглушка с LoremFlickr -->
-      <img src="https://loremflickr.com/400/300/<%= URI.encode_www_form_component(product.name) %>"
+    <div class="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition overflow-hidden text-sm min-h-[250px]">
+      <!-- Изображение -->
+      <img src="https://loremflickr.com/300/200/<%= URI.encode_www_form_component(product.name) %>"
            alt="<%= product.name %>"
-           class="w-full h-48 object-cover" />
+           class="w-full h-[150px] object-cover rounded-t-lg" />
 
-      <div class="p-4">
-        <h2 class="text-lg font-semibold text-blue-600 hover:underline mb-2">
-          <%= link_to product.name, product_path(product) %>
-        </h2>
-
-        <p class="text-gray-600 text-sm mb-3">
-          <%= truncate(product.description, length: 100) %>
+      <!-- Контент под изображением -->
+      <div class="p-3 flex flex-col justify-between h-[100px]">
+        <div>
+          <h2 class="text-gray-900 font-semibold text-sm leading-tight line-clamp-2">
+            <%= link_to product.name, product_path(product), class: "hover:underline" %>
+          </h2>
+          <p class="text-gray-600 text-xs line-clamp-2">
+            <%= truncate(product.description, length: 40) %>
+          </p>
+        </div>
+        <p class="text-sm font-bold text-gray-800 mt-2">
+          <%= number_to_currency(product.price, unit: "₽") %>
         </p>
-
-        <p class="font-semibold text-base mb-3">
-          Цена: <%= number_to_currency(product.price, unit: "₽") %>
-        </p>
-
-        <%= button_to "В корзину", add_to_cart_path(product), method: :post, class: "w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition" %>
+        <%= button_to "В корзину", add_to_cart_path(product),
+                      method: :post,
+                      class: "w-full bg-blue-600 text-white py-1 rounded-md hover:bg-blue-700 text-xs mt-1" %>
       </div>
     </div>
-  <% end %>
+
+    <div class="grid grid-cols-3 gap-4 border p-4">
+      <div class="bg-red-300 p-4">1</div>
+      <div class="bg-green-300 p-4">2</div>
+      <div class="bg-blue-300 p-4">3</div>
+      <div class="bg-yellow-300 p-4">4</div>
+    </div>
+
+<% end %>
 </div>

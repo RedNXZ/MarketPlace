@@ -24,3 +24,4 @@ ru:
     messages:
       confirmation: "не совпадает"
       too_short: "слишком короткий (не менее %{count} символов)"
+      not_found_in_database: "неправильное имя пользователя или пароль"

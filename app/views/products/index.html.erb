@@ -10,6 +10,12 @@
     <% end %>
   </nav>
 
+  <% if current_user&.admin? %>
+    <div class="text-end mb-4">
+      <%= link_to "Добавить товарчик", new_product_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
   <!-- Товары -->
   <div class="row">
     <% @products.each do |product| %>
@@ -32,10 +38,16 @@
               <%= link_to 'Подробнее', product_path(product), class: 'btn btn-outline-primary btn-sm' %>
 
               <% if user_signed_in? %>
-                <%= button_to 'Добавить в корзиночку', add_to_cart_path(product), method: :post, class: 'btn btn-success btn-sm' %>
+                <%= button_to 'Добавить в корзиночку', add_to_cart_path(product), method: :post, class: 'btn btn-success btn-sm w-100' %>
               <% else %>
                 <%= link_to 'Войдите, чтобы добавить в корзиночку', new_user_session_path, class: "btn btn-warning btn-sm" %>
               <% end %>
+
+              <% if current_user&.admin? %>
+                <%= link_to "Редактировать", edit_product_path(product), class: "btn btn-warning btn-sm" %>
+                <%= button_to "Удалить", product_path(product), method: :delete, data: { confirm: "Вы уверены?" }, class: "btn btn-danger btn-sm w-100", form: { class: "d-inline" } %>
+            <% end %>
+
             </div>
           </div>
         </div>

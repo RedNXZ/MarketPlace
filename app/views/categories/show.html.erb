@@ -1,0 +1,10 @@
+<h1>Категория: <%= @category.name %></h1>
+
+<% @products.each do |product| %>
+  <div style="border:1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+    <h2><%= link_to product.name, product_path(product) %></h2>
+    <p>Цена: <%= number_to_currency(product.price, unit: "₽") %></p>
+  </div>
+<% end %>
+
+<%= link_to "Все категории", categories_path %>

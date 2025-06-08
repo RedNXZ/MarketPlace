@@ -1,0 +1,36 @@
+<h1>Ваша корзина</h1>
+
+<% if @products.empty? %>
+  <p>Корзина пуста.</p>
+<% else %>
+  <table>
+    <thead>
+    <tr>
+      <th>Название</th>
+      <th>Количество</th>
+      <th>Цена за шт.</th>
+      <th>Итого</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @products.each do |product| %>
+      <% quantity = session[:cart][product.id.to_s] %>
+      <tr>
+        <td><%= link_to product.name, product_path(product) %></td>
+        <td><%= quantity %></td>
+        <td><%= number_to_currency(product.price, unit: "₽") %></td>
+        <td><%= number_to_currency(product.price * quantity, unit: "₽") %></td>
+        <td>
+          <%= button_to "Удалить", remove_from_cart_path(product), method: :delete %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= link_to "Продолжить покупки", root_path %>
+<% if @products.any? %>
+  <%= link_to "Оформить заказ", new_order_path, class: "button" %>
+<% end %>

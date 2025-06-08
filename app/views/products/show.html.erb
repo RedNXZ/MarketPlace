@@ -1,0 +1,6 @@
+<h2><%= @product.name %></h2>
+<p><%= number_to_currency(@product.price, unit: "₽") %></p>
+<p><%= @product.description %></p>
+<p><em>Категория: <%= @product.category&.name %></em></p>
+
+<%= link_to "Назад", root_path %>

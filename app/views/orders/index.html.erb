@@ -1,0 +1,15 @@
+<h1>Мои заказы</h1>
+
+<% if @orders.empty? %>
+  <p>У вас пока нет заказов.</p>
+<% else %>
+  <ul>
+    <% @orders.each do |order| %>
+      <li>
+        <%= link_to "Заказ №#{order.id}", order_path(order) %>
+        — от <%= order.created_at.strftime("%d.%m.%Y %H:%M") %>
+        — Статус: <%= order.status || "Новый" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

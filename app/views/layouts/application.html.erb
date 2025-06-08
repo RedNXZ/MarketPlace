@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcommerceStore</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+
+<body>
+<% if user_signed_in? %>
+  Привет, <%= current_user.name || current_user.email %>! |
+  <%= link_to 'Корзина', cart_path %> |
+  <%= link_to 'Мои заказы', orders_path %> |
+  <a href="#" id="logout-link">Выйти</a>
+
+  <script>
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+          e.preventDefault();
+
+          fetch("<%= destroy_user_session_path %>", {
+              method: 'DELETE',
+              headers: {
+                  'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+                  'Accept': 'application/json'
+              },
+              credentials: 'same-origin'
+          }).then(() => {
+              window.location.href = "/";
+          });
+      });
+  </script>
+<% else %>
+  <%= link_to 'Войти', new_user_session_path %> |
+  <%= link_to 'Регистрация', new_user_registration_path %>
+<% end %>
+
+<%= yield %>
+</body>
+</html>

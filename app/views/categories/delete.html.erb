@@ -1,0 +1,43 @@
+<div class="container my-5">
+  <h1 class="mb-4 text-center">Удаление категорий</h1>
+
+  <% flash.each do |key, message| %>
+    <div id="flash-message" class="alert alert-<%= key == 'notice' ? 'success' : 'danger' %> alert-dismissible fade show" role="alert" style="transition: opacity 0.5s ease;">
+      <%= message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+  <% end %>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Название категории</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= category.name %></td>
+        <td>
+          <%= button_to "Удалить", category_path(category), method: :delete, data: { confirm: "Вы уверены, что хотите удалить категорию '#{category.name}'?" }, class: "btn btn-danger btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const flash = document.getElementById('flash-message');
+        if (flash) {
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                setTimeout(() => {
+                    flash.remove();
+                }, 500); // Подождать завершения CSS-перехода
+            }, 2000);
+        }
+    });
+</script>

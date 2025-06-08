@@ -12,6 +12,8 @@
 
   <% if current_user&.admin? %>
     <div class="text-end mb-4">
+      <%= link_to "Добавить категорию", new_category_path, class: "btn btn-primary" %>
+      <%= link_to "Удалить категорию", delete_categories_path, class: "btn btn-primary" %>
       <%= link_to "Добавить товарчик", new_product_path, class: "btn btn-primary" %>
     </div>
   <% end %>

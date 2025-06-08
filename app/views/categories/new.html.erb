@@ -1,0 +1,12 @@
+<div class="container my-5" style="max-width: 600px;">
+  <h2 class="mb-4 text-center">Новая категория</h2>
+
+  <%= form_with model: @category, local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :name, "Название категории", class: "form-label" %>
+      <%= f.text_field :name, class: "form-control", required: true %>
+    </div>
+
+    <%= f.submit "Создать категорию", class: "btn btn-primary w-100" %>
+  <% end %>
+</div>

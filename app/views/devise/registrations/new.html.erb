@@ -1,6 +1,16 @@
 <div class="container my-5" style="max-width: 500px;">
   <h2 class="mb-4 text-center">Регистрация</h2>
 
+  <% if resource.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% resource.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <%= form_with model: resource, url: registration_path(resource_name), local: true do |f| %>
     <div class="mb-3">
       <%= f.label :email, class: "form-label" %>
@@ -23,4 +33,5 @@
   <div class="text-center mt-3">
     <%= link_to "Уже есть аккаунт? Войти", new_user_session_path %>
   </div>
+
 </div>

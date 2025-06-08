@@ -10,3 +10,17 @@ ru:
       timeout: "Время сессии истекло. Пожалуйста, войдите снова."
       unauthenticated: "Для доступа к этой странице необходимо войти в систему."
       unconfirmed: "Вы должны подтвердить свою почту перед входом."
+
+ru:
+  activerecord:
+    attributes:
+      user:
+        email: "Электронная почта"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      confirmation: "не совпадает"
+      too_short: "слишком короткий (не менее %{count} символов)"
